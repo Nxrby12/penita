@@ -1,0 +1,117 @@
+/* =================================================================
+   base.css: variabile, resetare, tipografie, butoane
+   ================================================================= */
+
+:root {
+    --ink: #1d2433;          /* text principal, culoarea cernelii */
+    --ink-soft: #545c6e;
+    --paper: #f7f2e8;        /* fundal, culoarea hartiei */
+    --paper-dark: #ece4d3;
+    --accent: #b8432f;       /* rosu-caramiziu, ca o panglica */
+    --accent-dark: #93321f;
+    --white: #fffdf8;
+    --radius: 10px;
+    --shadow: 0 10px 30px rgba(29, 36, 51, 0.12);
+    --font-serif: Georgia, "Times New Roman", serif;
+    --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--ink);
+    background-color: var(--paper);
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+h1, h2, h3 {
+    font-family: var(--font-serif);
+    line-height: 1.2;
+    margin: 0 0 0.6em;
+}
+
+h1 { font-size: clamp(2rem, 5vw, 3.4rem); }
+h2 { font-size: clamp(1.5rem, 3vw, 2.1rem); }
+h3 { font-size: 1.15rem; }
+
+a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.container {
+    width: min(1120px, 100% - 2.5rem);
+    margin-inline: auto;
+}
+
+/* ---------- Butoane ---------- */
+.btn {
+    display: inline-block;
+    padding: 0.8em 1.5em;
+    border: 2px solid var(--accent);
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--white);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.btn:hover {
+    background: var(--accent-dark);
+    border-color: var(--accent-dark);
+    text-decoration: none;
+    transform: translateY(-2px);
+}
+
+.btn-ghost {
+    background: transparent;
+    color: var(--accent);
+}
+
+.btn-ghost:hover {
+    color: var(--white);
+}
+
+.btn-small {
+    padding: 0.45em 1.1em;
+    font-size: 0.9rem;
+}
+
+/* ---------- Mesaje ---------- */
+.notice {
+    padding: 1rem 1.25rem;
+    border-left: 4px solid var(--ink-soft);
+    background: var(--white);
+    border-radius: var(--radius);
+}
+
+.notice-error {
+    border-left-color: var(--accent);
+}
+
+/* Accesibilitate: utilizatorii care nu vor animatii nu le primesc */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}

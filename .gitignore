@@ -1,0 +1,7 @@
+/vendor/
+/config/config.php
+/logs/*.log
+/public/uploads/*
+!/public/uploads/.gitkeep
+.DS_Store
+Thumbs.db

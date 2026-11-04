@@ -1,0 +1,10 @@
+# ---------------------------------------------------------------
+#  Front controller: orice cerere care nu e un fisier real
+#  (CSS, JS, imagine) ajunge la index.php, unde o preia Router-ul.
+# ---------------------------------------------------------------
+Options -Indexes
+
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]

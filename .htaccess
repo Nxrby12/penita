@@ -1,0 +1,17 @@
+# ---------------------------------------------------------------
+#  .htaccess principal (radacina proiectului)
+#  Trimite toate cererile in folderul public/ si blocheaza
+#  accesul direct la codul sursa, configurari si loguri.
+# ---------------------------------------------------------------
+
+# Nu afisa lista de fisiere din foldere
+Options -Indexes
+
+RewriteEngine On
+
+# Blocheaza accesul la folderele si fisierele sensibile
+RewriteRule ^(app|config|logs|tests|vendor|\.git)(/.*)?$ - [F,L]
+RewriteRule ^(composer\.(json|lock)|\.gitignore|\.env.*)$ - [F,L]
+
+# Tot restul merge in public/
+RewriteRule ^(.*)$ public/$1 [L]

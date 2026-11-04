@@ -1,0 +1,243 @@
+/* =================================================================
+   layout.css: header, sectiuni, grila de carti, responsive
+   ================================================================= */
+
+/* ---------- Header ---------- */
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(247, 242, 232, 0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--paper-dark);
+}
+
+.header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 68px;
+}
+
+.logo {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.logo:hover { text-decoration: none; }
+
+.logo-mark { color: var(--accent); }
+
+.main-nav {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.main-nav a:not(.btn) {
+    color: var(--ink);
+    font-weight: 500;
+}
+
+.nav-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    padding: 8px;
+    background: none;
+    border: 0;
+    cursor: pointer;
+}
+
+.nav-toggle span {
+    width: 24px;
+    height: 2px;
+    background: var(--ink);
+}
+
+/* ---------- Hero ---------- */
+.hero {
+    padding: clamp(3rem, 8vw, 6rem) 0;
+}
+
+.hero-inner {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    align-items: center;
+    gap: 3rem;
+}
+
+.eyebrow {
+    margin: 0 0 1rem;
+    color: var(--accent);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.lead {
+    font-size: 1.15rem;
+    color: var(--ink-soft);
+    max-width: 38ch;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+/* ---------- Cartea "Blind Date" (impachetata in hartie) ---------- */
+.blind-card {
+    position: relative;
+    aspect-ratio: 3 / 4;
+    max-width: 320px;
+    justify-self: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    text-align: center;
+    color: var(--ink);
+    background:
+        repeating-linear-gradient(45deg, transparent 0 14px, rgba(29, 36, 51, 0.04) 14px 28px),
+        #d9c7a3;
+    border-radius: 6px 14px 14px 6px;
+    box-shadow: var(--shadow), inset 8px 0 0 rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    animation: float 5s ease-in-out infinite;
+}
+
+.blind-card:hover { text-decoration: none; }
+
+.blind-ribbon {
+    position: absolute;
+    inset: 0 auto 0 50%;
+    width: 26px;
+    transform: translateX(-50%);
+    background: var(--accent);
+}
+
+.blind-label {
+    position: relative;
+    padding: 0.8rem 1.2rem;
+    background: var(--white);
+    border-radius: 4px;
+    font-family: var(--font-serif);
+    font-size: 1.3rem;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.blind-clues {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.4rem;
+    margin-top: 1.2rem;
+}
+
+.blind-clues span {
+    padding: 0.2em 0.7em;
+    background: var(--ink);
+    color: var(--white);
+    font-size: 0.8rem;
+    border-radius: 999px;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50%      { transform: translateY(-12px) rotate(1deg); }
+}
+
+/* ---------- Sectiuni si grila de carti ---------- */
+.section {
+    padding: 3rem 0 4rem;
+}
+
+.book-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 1.75rem;
+}
+
+.book-card img {
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    width: 100%;
+    border-radius: 4px;
+    box-shadow: var(--shadow);
+    margin-bottom: 0.8rem;
+}
+
+.book-card h3 a { color: var(--ink); }
+.book-author { margin: 0; color: var(--ink-soft); font-size: 0.9rem; }
+.book-price  { margin: 0.2rem 0 0; font-weight: 700; }
+
+.error-page {
+    text-align: center;
+    padding: 6rem 0;
+}
+
+.error-page .lead { margin: 0 auto 2rem; }
+
+/* ---------- Footer ---------- */
+.site-footer {
+    padding: 2rem 0;
+    border-top: 1px solid var(--paper-dark);
+    color: var(--ink-soft);
+    font-size: 0.9rem;
+}
+
+/* =================================================================
+   RESPONSIVE
+   ================================================================= */
+
+/* Tableta */
+@media (max-width: 900px) {
+    .hero-inner {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .lead { margin-inline: auto; }
+    .hero-actions { justify-content: center; }
+    .blind-card { max-width: 260px; }
+}
+
+/* Telefon */
+@media (max-width: 640px) {
+    .nav-toggle { display: flex; }
+
+    .main-nav {
+        display: none;
+        position: absolute;
+        top: 68px;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        gap: 0;
+        padding: 0.5rem 1.25rem 1.25rem;
+        background: var(--paper);
+        border-bottom: 1px solid var(--paper-dark);
+    }
+
+    .main-nav.is-open { display: flex; }
+
+    .main-nav a {
+        width: 100%;
+        padding: 0.8rem 0;
+        text-align: center;
+    }
+
+    .book-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+}
