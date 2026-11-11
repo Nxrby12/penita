@@ -1,0 +1,225 @@
+/* =================================================================
+   forms.css: formulare, mesaje, panouri de cont, tabele
+   ================================================================= */
+
+/* ---------- Formulare de autentificare ---------- */
+.auth-wrap {
+    display: flex;
+    justify-content: center;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 440px;
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    background: var(--white);
+    border: 1px solid var(--paper-dark);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    animation: rise 0.4s ease-out;
+}
+
+.auth-card h1 {
+    font-size: 2rem;
+    margin-bottom: 0.3rem;
+}
+
+.auth-sub {
+    margin: 0 0 1.5rem;
+    color: var(--ink-soft);
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+}
+
+.field label,
+.role-picker legend {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.field input {
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+    font: inherit;
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid #cfc4ad;
+    border-radius: 8px;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.field input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(184, 67, 47, 0.18);
+}
+
+.field input[aria-invalid="true"] {
+    border-color: var(--accent);
+}
+
+.field-hint {
+    margin: 0.3rem 0 0;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+}
+
+.field-error {
+    margin: 0.3rem 0 0;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent);
+}
+
+.role-picker {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    display: grid;
+    gap: 0.6rem;
+}
+
+.role-option {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.75rem 0.9rem;
+    border: 1px solid #cfc4ad;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.role-option:has(input:checked) {
+    border-color: var(--accent);
+    background: rgba(184, 67, 47, 0.06);
+}
+
+.role-option input {
+    accent-color: var(--accent);
+}
+
+.author-only[hidden] {
+    display: none;
+}
+
+.btn-block {
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+.nav-form {
+    margin: 0;
+}
+
+.nav-form .btn {
+    font: inherit;
+    font-size: 0.9rem;
+}
+
+/* ---------- Mesaje flash ---------- */
+.flash-wrap {
+    padding-top: 1.5rem;
+}
+
+.notice-success {
+    border-left-color: #3f7d4e;
+}
+
+/* ---------- Pagina "Contul meu" ---------- */
+.panel-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.25rem;
+    margin-top: 2rem;
+}
+
+.panel {
+    padding: 1.5rem;
+    background: var(--white);
+    border: 1px solid var(--paper-dark);
+    border-radius: var(--radius);
+}
+
+.panel h2 {
+    font-size: 1.25rem;
+}
+
+.panel p {
+    color: var(--ink-soft);
+}
+
+.panel-accent {
+    border-top: 4px solid var(--accent);
+}
+
+/* ---------- Tabele de date ---------- */
+.table-wrap {
+    overflow-x: auto;
+    margin-top: 1.5rem;
+    background: var(--white);
+    border: 1px solid var(--paper-dark);
+    border-radius: var(--radius);
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.data-table th,
+.data-table td {
+    padding: 0.8rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--paper-dark);
+    white-space: nowrap;
+}
+
+.data-table th {
+    background: var(--paper);
+    font-weight: 600;
+}
+
+.data-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.badge {
+    display: inline-block;
+    padding: 0.15em 0.65em;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    background: var(--paper-dark);
+}
+
+.badge-admin { background: var(--ink); color: var(--white); }
+.badge-autor { background: var(--accent); color: var(--white); }
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+@keyframes rise {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Pe telefon, butonul de iesire ocupa toata latimea meniului */
+@media (max-width: 640px) {
+    .nav-form,
+    .nav-form .btn {
+        width: 100%;
+    }
+}
