@@ -42,7 +42,23 @@ function old(string $field, string $default = ''): string
 {
     static $old = null;
     $old ??= Session::pull('old', []);
-    return (string) ($old[$field] ?? $default);
+    $value = $old[$field] ?? $default;
+    return is_scalar($value) ? (string) $value : $default;
+}
+
+/** Lista completata anterior (ex: genurile bifate). @return string[] */
+function old_list(string $field): array
+{
+    $value = old_raw($field);
+    return is_array($value) ? array_map('strval', $value) : [];
+}
+
+/** Valoarea bruta din formularul anterior (text sau lista). */
+function old_raw(string $field): mixed
+{
+    static $old = null;
+    $old ??= Session::pull('old_raw', []);
+    return $old[$field] ?? null;
 }
 
 /** Mesajul de eroare pentru un camp, daca exista. */

@@ -21,7 +21,8 @@
                 <article class="panel panel-accent">
                     <h2>Publică o carte</h2>
                     <p>Încarcă manuscrisul (PDF) și coperta. Un administrator o verifică înainte de publicare.</p>
-                    <a href="<?= url('/autor/carti') ?>">Cărțile mele publicate →</a>
+                    <a href="<?= url('/autor/carti/noua') ?>">Publică o carte →</a> ·
+                    <a href="<?= url('/autor/carti') ?>">Cărțile mele →</a>
                 </article>
             <?php endif; ?>
 
@@ -29,7 +30,7 @@
                 <article class="panel panel-accent">
                     <h2>Administrare</h2>
                     <p>Aprobă cărțile trimise, gestionează Blind Date-urile și utilizatorii.</p>
-                    <a href="<?= url('/admin') ?>">Deschide panoul →</a>
+                    <a href="<?= url('/admin/carti') ?>">Deschide panoul →</a>
                 </article>
             <?php endif; ?>
         </div>

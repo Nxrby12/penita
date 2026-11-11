@@ -2,6 +2,7 @@
     <div class="container">
         <p class="eyebrow">Administrare</p>
         <h1>Utilizatori</h1>
+        <?= \App\Core\View::render('admin/_nav', ['active' => 'users', 'pendingCount' => $pendingCount], null) ?>
         <p class="lead"><?= count($users) === 1 ? '1 cont înregistrat' : count($users) . ' conturi înregistrate' ?>.</p>
 
         <div class="table-wrap">

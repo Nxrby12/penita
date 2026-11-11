@@ -5,6 +5,7 @@ namespace App\Controllers;
 
 use App\Core\Auth;
 use App\Core\Controller;
+use App\Repositories\BookRepository;
 use App\Repositories\UserRepository;
 
 /** Panoul de administrare: accesibil DOAR rolului admin. */
@@ -16,8 +17,9 @@ class AdminController extends Controller
         Auth::requireRole('admin');   // altfel: ForbiddenException -> pagina 403
 
         $this->view('admin/index', [
-            'title' => 'Administrare',
-            'users' => (new UserRepository())->findAll(),
+            'title'        => 'Administrare',
+            'users'        => (new UserRepository())->findAll(),
+            'pendingCount' => (new BookRepository())->countByStatus('pending'),
         ]);
     }
 }

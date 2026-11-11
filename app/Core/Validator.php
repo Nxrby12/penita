@@ -7,7 +7,7 @@ use App\Exceptions\ValidationException;
 
 /**
  * Valideaza datele din formulare dupa reguli simple:
- *   required, email, min:8, max:50, same:camp, in:a,b, alpha_dash
+ *   required, email, min:8, max:50, same:camp, in:a,b, alpha_dash, numeric
  *
  * Exemplu:
  *   $data = Validator::validate($_POST, ['email' => 'required|email']);
@@ -22,6 +22,7 @@ class Validator
         'same'       => 'Valorile nu coincid.',
         'in'         => 'Valoarea aleasă nu este permisă.',
         'alpha_dash' => 'Sunt permise doar litere, cifre, - și _.',
+        'numeric'    => 'Trebuie să fie un număr.',
     ];
 
     /**
@@ -36,7 +37,8 @@ class Validator
         $errors = [];
 
         foreach ($rules as $field => $ruleString) {
-            $value = trim((string) ($input[$field] ?? ''));
+            $raw = $input[$field] ?? '';
+            $value = is_scalar($raw) ? trim((string) $raw) : '';   // listele nu sunt acceptate aici
             $clean[$field] = $value;
 
             foreach (explode('|', $ruleString) as $rule) {
@@ -68,6 +70,7 @@ class Validator
             'same'       => $value === (string) ($input[$param] ?? ''),
             'in'         => in_array($value, explode(',', (string) $param), true),
             'alpha_dash' => preg_match('/^[\pL\pN_-]+$/u', $value) === 1,
+            'numeric'    => is_numeric(str_replace(',', '.', $value)),
             default      => throw new \InvalidArgumentException("Regula necunoscuta: {$rule}"),
         };
     }

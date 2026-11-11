@@ -28,6 +28,7 @@ abstract class Controller
         unset($old['password'], $old['password_confirmation'], $old['_csrf']);
         Session::flash('errors', $errors instanceof ValidationException ? $errors->errors() : $errors);
         Session::flash('old', $old);
+        Session::flash('old_raw', $old);
         $this->redirect($path);
     }
 

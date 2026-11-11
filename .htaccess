@@ -10,7 +10,7 @@ Options -Indexes
 RewriteEngine On
 
 # Blocheaza accesul la folderele si fisierele sensibile
-RewriteRule ^(app|config|logs|tests|vendor|\.git)(/.*)?$ - [F,L]
+RewriteRule ^(app|config|database|logs|storage|tests|vendor|\.git)(/.*)?$ - [F,L]
 RewriteRule ^(composer\.(json|lock)|\.gitignore|\.env.*)$ - [F,L]
 
 # Tot restul merge in public/

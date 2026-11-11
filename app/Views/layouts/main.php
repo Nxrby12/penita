@@ -15,6 +15,7 @@ $flashError = Session::pull('error');
     <link rel="stylesheet" href="<?= asset('css/base.css') ?>">
     <link rel="stylesheet" href="<?= asset('css/layout.css') ?>">
     <link rel="stylesheet" href="<?= asset('css/forms.css') ?>">
+    <link rel="stylesheet" href="<?= asset('css/components.css') ?>">
     <script src="<?= asset('js/app.js') ?>" defer></script>
 </head>
 <body>
@@ -35,7 +36,7 @@ $flashError = Session::pull('error');
 
                 <?php if ($currentUser): ?>
                     <?php if ($currentUser->isAdmin()): ?>
-                        <a href="<?= url('/admin') ?>">Administrare</a>
+                        <a href="<?= url('/admin/carti') ?>">Administrare</a>
                     <?php endif; ?>
                     <a href="<?= url('/cont') ?>">Contul meu</a>
                     <form action="<?= url('/iesire') ?>" method="post" class="nav-form">
