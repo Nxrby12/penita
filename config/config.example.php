@@ -6,6 +6,7 @@
  */
 return [
     'app_name' => 'Penița',
+    'timezone' => 'Europe/Bucharest',
 
     // Pe XAMPP site-ul e la http://localhost/biblioteca  -> '/biblioteca'
     // Pe hosting, daca site-ul e direct pe domeniu         -> ''
@@ -21,6 +22,9 @@ return [
         'stripe_secret' => 'sk_test_...',   // din dashboard.stripe.com -> Developers -> API keys
         'currency'      => 'ron',
     ],
+
+    // Limitarea cererilor: cate cereri pe minut are voie un IP
+    'rate_limit' => ['max' => 100],
 
     'db' => [
         'host'     => '127.0.0.1',

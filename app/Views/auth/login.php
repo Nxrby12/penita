@@ -20,6 +20,11 @@
                     <?php if ($msg = error('password')): ?><p class="field-error"><?= e($msg) ?></p><?php endif; ?>
                 </div>
 
+                <?php if ($needsCaptcha): ?>
+                    <p class="notice notice-error">Au fost mai multe încercări greșite. Confirmă că nu ești robot.</p>
+                    <?= \App\Core\View::render('partials/captcha', [], null) ?>
+                <?php endif; ?>
+
                 <button type="submit" class="btn btn-block">Intră în cont</button>
             </form>
         </div>

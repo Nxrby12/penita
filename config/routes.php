@@ -6,6 +6,8 @@
 use App\Controllers\AccountController;
 use App\Controllers\AdminBookController;
 use App\Controllers\AdminController;
+use App\Controllers\AdminLogController;
+use App\Controllers\CaptchaController;
 use App\Controllers\AuthController;
 use App\Controllers\AuthorBookController;
 use App\Controllers\BlindDateController;
@@ -31,6 +33,7 @@ return [
     ['GET',  '/descarca/{id}',             [DownloadController::class, 'download']],
 
     // Autentificare
+    ['GET',  '/captcha',                   [CaptchaController::class, 'image']],
     ['GET',  '/autentificare',             [AuthController::class, 'showLogin']],
     ['POST', '/autentificare',             [AuthController::class, 'login']],
     ['GET',  '/inregistrare',              [AuthController::class, 'showRegister']],
@@ -49,6 +52,8 @@ return [
     // Administrare
     ['GET',  '/admin',                     [AdminController::class, 'index']],
     ['GET',  '/admin/carti',               [AdminBookController::class, 'index']],
+    ['GET',  '/admin/jurnal',              [AdminLogController::class, 'index']],
+    ['GET',  '/admin/jurnal/descarca',     [AdminLogController::class, 'download']],
     ['POST', '/admin/carti/{id}/aproba',   [AdminBookController::class, 'approve']],
     ['POST', '/admin/carti/{id}/respinge', [AdminBookController::class, 'reject']],
     ['POST', '/admin/carti/{id}/sterge',   [AdminBookController::class, 'destroy']],

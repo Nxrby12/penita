@@ -12,7 +12,7 @@
         <?php else: ?>
             <div class="blind-grid">
                 <?php foreach ($items as $i => $item): $book = $item['book']; ?>
-                    <article class="blind-package" style="--tilt: <?= $i % 2 ? '1.5deg' : '-1.5deg' ?>">
+                    <article class="blind-package">
                         <div class="blind-paper" aria-hidden="true">
                             <span class="blind-ribbon"></span>
                             <span class="blind-number">#<?= $book->id ?></span>

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Core\Controller;
+use App\Core\Logger;
 use App\Repositories\BookRepository;
 use PDOException;
 
@@ -18,7 +19,7 @@ class HomeController extends Controller
             $books = (new BookRepository())->latestApproved(8);
         } catch (PDOException $e) {
             // Baza de date nu raspunde: pagina se afiseaza oricum, fara carti
-            error_log('DB: ' . $e->getMessage());
+            Logger::error('error.database', ['error' => $e->getMessage()]);
             $dbError = true;
         }
 

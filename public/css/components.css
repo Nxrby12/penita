@@ -325,8 +325,12 @@
 }
 
 .blind-package:hover {
-    transform: translateY(-6px) rotate(var(--tilt, -1.5deg));
+    transform: translateY(-6px) rotate(-1.5deg);
     box-shadow: var(--shadow);
+}
+
+.blind-package:nth-child(even):hover {
+    transform: translateY(-6px) rotate(1.5deg);
 }
 
 .blind-paper {

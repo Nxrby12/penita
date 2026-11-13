@@ -5,6 +5,7 @@ namespace App\Controllers;
 
 use App\Core\Auth;
 use App\Core\Controller;
+use App\Core\Logger;
 use App\Exceptions\ForbiddenException;
 use App\Exceptions\NotFoundException;
 use App\Repositories\BookRepository;
@@ -38,6 +39,8 @@ class DownloadController extends Controller
         if (!is_file($path)) {
             throw new NotFoundException('Fisierul PDF lipseste');
         }
+
+        Logger::info('book.downloaded', ['book_id' => $book->id, 'title' => $book->title]);
 
         header('Content-Type: application/pdf');
         header('Content-Disposition: attachment; filename="' . $book->slug . '.pdf"');

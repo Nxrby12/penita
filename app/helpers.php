@@ -36,10 +36,15 @@ function absolute_url(string $path = '/'): string
     return $base . '/' . ltrim($path, '/');
 }
 
-/** Link catre un fisier din public/ (CSS, JS, imagini). */
+/**
+ * Link catre un fisier din public/ (CSS, JS, imagini).
+ * Se adauga ?v=<data modificarii>: cand fisierul se schimba, browserul il descarca din nou
+ * (fara Ctrl+F5), iar cat timp nu se schimba, il poate tine in cache.
+ */
 function asset(string $path): string
 {
-    return url($path);
+    $file = ROOT . '/public/' . ltrim($path, '/');
+    return url($path) . (is_file($file) ? '?v=' . filemtime($file) : '');
 }
 
 /** Campul ascuns cu token-ul CSRF, pentru fiecare formular POST. */

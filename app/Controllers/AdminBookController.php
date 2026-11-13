@@ -5,6 +5,7 @@ namespace App\Controllers;
 
 use App\Core\Auth;
 use App\Core\Controller;
+use App\Core\Logger;
 use App\Core\Session;
 use App\Exceptions\NotFoundException;
 use App\Repositories\BookRepository;
@@ -83,6 +84,7 @@ class AdminBookController extends Controller
         }
 
         $this->books->saveBlindDate($book->id, $enabled, $enabled ? $clues : []);
+        Logger::info('admin.blind_date', ['book_id' => $book->id, 'title' => $book->title, 'enabled' => $enabled]);
         Session::flash('success', $enabled
             ? "„{$book->title}” este acum un Blind Date."
             : "„{$book->title}” nu mai este Blind Date.");
@@ -96,6 +98,7 @@ class AdminBookController extends Controller
         try {
             $this->books->delete($book->id);
             BookStorage::deleteFiles($book);
+            Logger::info('admin.book_deleted', ['book_id' => $book->id, 'title' => $book->title]);
             Session::flash('success', "„{$book->title}” a fost ștearsă.");
         } catch (\PDOException) {
             Session::flash('error', "„{$book->title}” a fost deja cumpărată, așa că nu poate fi ștearsă. O poți respinge.");
@@ -108,6 +111,7 @@ class AdminBookController extends Controller
         $this->guard();
         $book = $this->findOrFail($id);
         $this->books->setStatus($book->id, $status, Auth::user()->id);
+        Logger::info('admin.book_' . $status, ['book_id' => $book->id, 'title' => $book->title]);
         Session::flash('success', "„{$book->title}” {$message}");
         $this->redirect('/admin/carti');
     }

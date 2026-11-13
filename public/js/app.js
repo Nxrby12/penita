@@ -41,6 +41,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // ---------- CAPTCHA: alt cod ----------
+    document.querySelectorAll('[data-captcha-refresh]').forEach((button) => {
+        button.addEventListener('click', () => {
+            const img = button.closest('.captcha-field').querySelector('.captcha-img');
+            img.src = img.src.split('?')[0] + '?t=' + Date.now();
+            button.closest('.captcha-field').querySelector('input').value = '';
+        });
+    });
+
     // ---------- Carusel ----------
     document.querySelectorAll('[data-carousel]').forEach(initCarousel);
 });

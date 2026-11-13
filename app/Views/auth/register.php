@@ -48,6 +48,8 @@ $role = old('role', 'cititor');
                 <?= $field('password', 'Parolă', 'password', 'new-password', 'Minimum 8 caractere.') ?>
                 <?= $field('password_confirmation', 'Confirmă parola', 'password', 'new-password') ?>
 
+                <?= \App\Core\View::render('partials/captcha', [], null) ?>
+
                 <button type="submit" class="btn btn-block">Creează cont</button>
             </form>
         </div>

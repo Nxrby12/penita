@@ -5,6 +5,7 @@ namespace App\Controllers;
 
 use App\Core\Auth;
 use App\Core\Controller;
+use App\Core\Logger;
 use App\Core\Session;
 use App\Core\Validator;
 use App\Exceptions\ForbiddenException;
@@ -82,12 +83,14 @@ class AuthorBookController extends Controller
         try {
             $cover = $uploader->storeImage($_FILES['cover'] ?? [], BookStorage::coverDir());
         } catch (UploadException $e) {
+            Logger::warning('book.upload_rejected', ['field' => 'cover', 'file' => $_FILES['cover']['name'] ?? '', 'reason' => $e->getMessage()]);
             $this->backWithErrors($back, ['cover' => $e->getMessage()], $_POST);
         }
         try {
             $pdf = $uploader->storePdf($_FILES['pdf'] ?? [], BookStorage::pdfDir());
         } catch (UploadException $e) {
             BookStorage::deleteCover($cover);   // nu lasam coperta orfana
+            Logger::warning('book.upload_rejected', ['field' => 'pdf', 'file' => $_FILES['pdf']['name'] ?? '', 'reason' => $e->getMessage()]);
             $this->backWithErrors($back, ['pdf' => $e->getMessage()], $_POST);
         }
 
@@ -102,6 +105,7 @@ class AuthorBookController extends Controller
             throw $e;
         }
 
+        Logger::info('book.submitted', ['book_id' => $book->id, 'title' => $book->title]);
         Session::flash('success', "„{$book->title}” a fost trimisă. O publicăm după ce o verifică un administrator.");
         $this->redirect('/autor/carti');
     }
@@ -120,6 +124,7 @@ class AuthorBookController extends Controller
         try {
             $this->books->delete($book->id);
             BookStorage::deleteFiles($book);
+            Logger::info('book.deleted', ['book_id' => $book->id, 'title' => $book->title]);
             Session::flash('success', "„{$book->title}” a fost ștearsă.");
         } catch (\PDOException) {
             // cheia straina din order_items impiedica stergerea cartilor deja cumparate

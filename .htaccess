@@ -1,17 +1,60 @@
 # ---------------------------------------------------------------
 #  .htaccess principal (radacina proiectului)
-#  Trimite toate cererile in folderul public/ si blocheaza
-#  accesul direct la codul sursa, configurari si loguri.
+#  1. blocheaza accesul direct la codul sursa, configurari si loguri
+#  2. trimite toate cererile in folderul public/
+#  3. adauga antetele de securitate la fiecare raspuns
 # ---------------------------------------------------------------
 
-# Nu afisa lista de fisiere din foldere
+# Nu afisa lista de fisiere din foldere si nu afisa versiunea serverului
 Options -Indexes
+ServerSignature Off
+
+# Fisiere care nu trebuie servite niciodata, oriunde s-ar afla
+<FilesMatch "(^\.|\.(sql|log|ini|lock|md|sh|bak|dist)$|^composer\.json$)">
+    Require all denied
+</FilesMatch>
 
 RewriteEngine On
 
 # Blocheaza accesul la folderele si fisierele sensibile
-RewriteRule ^(app|config|database|logs|storage|tests|vendor|\.git)(/.*)?$ - [F,L]
-RewriteRule ^(composer\.(json|lock)|\.gitignore|\.env.*)$ - [F,L]
+RewriteRule ^(app|config|database|logs|storage|tests|vendor|\.git|\.github)(/.*)?$ - [F,L]
+RewriteRule ^(composer\.(json|lock)|\.gitignore|\.env.*|phpunit\.xml)$ - [F,L]
+
+# --- Pe hosting: scoate # de pe cele 3 randuri de mai jos ca sa trimita totul pe HTTPS ---
+# RewriteCond %{HTTPS} off
+# RewriteCond %{HTTP_HOST} !^(localhost|127\.0\.0\.1|192\.168\.)
+# RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
 # Tot restul merge in public/
 RewriteRule ^(.*)$ public/$1 [L]
+
+# ---------------------------------------------------------------
+#  Antete de securitate (verificate cu Security Headers: calificativ A)
+# ---------------------------------------------------------------
+<IfModule mod_headers.c>
+    # Antetele trimise si din PHP (SecurityHeaders) sunt scoase intai, ca sa nu apara de doua ori
+    Header unset Content-Security-Policy
+    Header unset X-Frame-Options
+    Header unset X-Content-Type-Options
+    Header unset Referrer-Policy
+    Header unset Permissions-Policy
+    Header unset Cross-Origin-Opener-Policy
+    Header unset Strict-Transport-Security
+
+    # De unde are voie pagina sa incarce resurse: doar de pe propriul site
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; form-action 'self' https://checkout.stripe.com; frame-ancestors 'none'; base-uri 'self'; object-src 'none'"
+    # Site-ul nu poate fi pus intr-un iframe pe alt site (clickjacking)
+    Header always set X-Frame-Options "DENY"
+    # Browserul nu ghiceste tipul fisierelor (un .jpg ramane imagine)
+    Header always set X-Content-Type-Options "nosniff"
+    # Cat din adresa paginii se trimite altor site-uri
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    # Functiile browserului pe care site-ul nu le foloseste sunt oprite
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(self \"https://checkout.stripe.com\")"
+    Header always set Cross-Origin-Opener-Policy "same-origin"
+    # Doar pe HTTPS: browserul tine minte un an ca site-ul se deschide doar securizat
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains" env=HTTPS
+    # Nu dezvalui versiunea de PHP
+    Header always unset X-Powered-By
+    Header unset X-Powered-By
+</IfModule>

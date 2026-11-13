@@ -341,3 +341,65 @@ fieldset.field {
         width: 100%;
     }
 }
+
+/* ---------- CAPTCHA ---------- */
+.captcha-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.5rem;
+}
+
+.captcha-img {
+    border: 1px solid #cfc4ad;
+    border-radius: 8px;
+}
+
+.captcha-refresh {
+    width: 2.4rem;
+    height: 2.4rem;
+    font-size: 1.3rem;
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid #cfc4ad;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.captcha-refresh:hover {
+    transform: rotate(180deg);
+}
+
+#captcha {
+    max-width: 200px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+}
+
+/* ---------- Jurnal ---------- */
+.log-table td {
+    white-space: normal;
+    vertical-align: top;
+    font-size: 0.88rem;
+}
+
+.log-table td:first-child {
+    white-space: nowrap;
+}
+
+.log-details span {
+    display: block;
+    color: var(--ink-soft);
+    word-break: break-word;
+}
+
+.badge-level-info    { background: #dfe7f1; }
+.badge-level-warning { background: #f1dfb0; }
+.badge-level-error   { background: #efc9c1; }
+
+.filter-sep {
+    width: 1px;
+    margin: 0 0.4rem;
+    background: var(--paper-dark);
+}

@@ -5,6 +5,7 @@ namespace App\Controllers;
 
 use App\Core\Auth;
 use App\Core\Controller;
+use App\Core\Logger;
 use App\Core\Session;
 use App\Exceptions\ForbiddenException;
 use App\Exceptions\NotFoundException;
@@ -51,6 +52,7 @@ class OrderController extends Controller
         // Cartile gratuite nu trec prin Stripe
         if ($book->price <= 0) {
             $this->orders->markPaid($orderId);
+            Logger::info('order.paid', ['order_id' => $orderId, 'book_id' => $book->id, 'amount' => 0]);
             Session::flash('success', 'Cartea a fost adăugată în biblioteca ta.');
             $this->redirect('/cont');
         }
@@ -66,12 +68,13 @@ class OrderController extends Controller
             );
         } catch (PaymentException $e) {
             $this->orders->markFailed($orderId);
-            error_log($e->getMessage());
+            Logger::error('order.payment_error', ['order_id' => $orderId, 'error' => $e->getMessage()]);
             Session::flash('error', 'Plata nu a putut fi pornită. Încearcă din nou mai târziu.');
             $this->redirect($back);
         }
 
         $this->orders->attachSession($orderId, $checkout->id);
+        Logger::info('order.started', ['order_id' => $orderId, 'book_id' => $book->id, 'amount' => $book->price]);
         $this->redirectTo($checkout->url);
     }
 
@@ -90,14 +93,17 @@ class OrderController extends Controller
             try {
                 $paid = PaymentGatewayFactory::make()->isPaid($sessionId, $order->id);
             } catch (PaymentException $e) {
-                error_log($e->getMessage());
+                Logger::error('order.payment_error', ['order_id' => $order->id, 'error' => $e->getMessage()]);
                 $paid = false;
             }
             if (!$paid) {
+                Logger::warning('order.not_confirmed', ['order_id' => $order->id]);
                 Session::flash('error', 'Plata nu a fost confirmată. Dacă ți s-au luat banii, scrie-ne.');
                 $this->redirect('/cont');
             }
             $this->orders->markPaid($order->id);
+            Logger::info('order.paid', ['order_id' => $order->id, 'book_id' => $this->orders->bookIdForOrder($order->id),
+                                        'amount' => $this->orders->total($order->id)]);
         }
 
         Session::flash('success', 'Plata a reușit! Cartea te așteaptă în biblioteca ta.');
@@ -109,6 +115,7 @@ class OrderController extends Controller
         $this->requireLogin();
         $order = $this->orderFromQuery();
         $this->orders->markFailed($order->id);
+        Logger::info('order.cancelled', ['order_id' => $order->id]);
         Session::flash('error', 'Ai anulat plata. Nu ți s-a luat niciun ban.');
         $this->redirect('/carti');
     }
