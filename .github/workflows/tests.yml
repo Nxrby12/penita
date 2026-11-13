@@ -1,0 +1,49 @@
+# ---------------------------------------------------------------
+#  Integrare continua (CI) cu GitHub Actions
+#  La fiecare push si pull request, GitHub porneste un server Linux,
+#  instaleaza PHP si dependintele, verifica sintaxa tuturor fisierelor
+#  si ruleaza testele unitare. Rezultatul apare in tab-ul "Actions".
+# ---------------------------------------------------------------
+name: Teste
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  teste:
+    name: PHP ${{ matrix.php }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php: ['8.3']
+
+    steps:
+      - name: Descarca codul
+        uses: actions/checkout@v4
+
+      - name: Instaleaza PHP ${{ matrix.php }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: gd, mbstring, pdo_mysql, fileinfo, zip
+          tools: composer
+          coverage: none
+
+      - name: Cache pentru Composer
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache/files
+          key: composer-${{ matrix.php }}-${{ hashFiles('composer.lock') }}
+
+      - name: Instaleaza dependintele (Stripe, PHPUnit)
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Verifica sintaxa tuturor fisierelor PHP
+        run: find . -name "*.php" -not -path "./vendor/*" -print0 | xargs -0 -n1 php -l > /dev/null
+
+      - name: Ruleaza testele unitare
+        run: vendor/bin/phpunit --testdox

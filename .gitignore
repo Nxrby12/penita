@@ -8,3 +8,7 @@
 Thumbs.db
 /storage/*
 !/storage/.gitkeep
+
+# PHPUnit
+.phpunit.result.cache
+/.phpunit.cache/

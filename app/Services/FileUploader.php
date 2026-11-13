@@ -33,8 +33,14 @@ class FileUploader
         'pdf' => 'application/pdf',
     ];
 
-    /** Elemente PDF care pot ascunde sau rula cod. */
-    private const PDF_FORBIDDEN = ['/JavaScript', '/JS', '/Launch', '/EmbeddedFile', '/RichMedia'];
+    /** Elemente PDF care pot ascunde sau rula cod (expresii regulate). */
+    private const PDF_FORBIDDEN = [
+        '#/JavaScript#',            // cod JavaScript
+        '#/JS(?![A-Za-z])#',        // forma scurta pentru JavaScript (dar nu /JSON etc.)
+        '#/Launch#',                // porneste un program
+        '#/EmbeddedFiles?#',        // fisiere atasate: /EmbeddedFile si /EmbeddedFiles
+        '#/RichMedia#',             // Flash / video incorporat
+    ];
 
     private const MAX_COVER_WIDTH = 900;
 
@@ -149,8 +155,8 @@ class FileUploader
         if (!str_starts_with($content, '%PDF-')) {
             throw new UploadException('Cartea nu este un PDF valid.');
         }
-        foreach (self::PDF_FORBIDDEN as $marker) {
-            if (preg_match('#' . preg_quote($marker, '#') . '(?![A-Za-z])#', $content)) {
+        foreach (self::PDF_FORBIDDEN as $pattern) {
+            if (preg_match($pattern, $content)) {
                 throw new UploadException('Cartea conține elemente nepermise (cod sau fișiere atașate).');
             }
         }
