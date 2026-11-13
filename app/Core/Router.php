@@ -36,6 +36,8 @@ class Router
     public function dispatch(string $method, string $uri): void
     {
         $path = $this->normalize($uri);
+        // HEAD = GET fara continut (folosit de motoare de cautare si monitoare de disponibilitate)
+        $method = strtoupper($method) === 'HEAD' ? 'GET' : $method;
 
         foreach ($this->routes as $route) {
             if ($route['method'] !== strtoupper($method)) {

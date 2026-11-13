@@ -36,6 +36,17 @@ function absolute_url(string $path = '/'): string
     return $base . '/' . ltrim($path, '/');
 }
 
+/** Adresa paginii curente, fara prefixul de baza si fara parametri (ex: /carti). */
+function current_path(): string
+{
+    $path = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
+    $base = View::baseUrl();
+    if ($base !== '' && str_starts_with($path, $base)) {
+        $path = substr($path, strlen($base));
+    }
+    return '/' . ltrim($path, '/');
+}
+
 /**
  * Link catre un fisier din public/ (CSS, JS, imagini).
  * Se adauga ?v=<data modificarii>: cand fisierul se schimba, browserul il descarca din nou

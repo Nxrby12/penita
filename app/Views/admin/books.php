@@ -1,4 +1,10 @@
 <?php
+/**
+ * Variabile primite de la AdminBookController::index()
+ * @var \App\Models\Book[] $books
+ * @var string|null        $status  filtrul ales
+ * @var int                $pendingCount
+ */
 use App\Core\View;
 use App\Models\Book;
 

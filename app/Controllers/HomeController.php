@@ -24,6 +24,14 @@ class HomeController extends Controller
         }
 
         $this->view('home/index', [
+            'canonical'      => absolute_url('/'),
+            'structuredData' => [
+                '@context'    => 'https://schema.org',
+                '@type'       => 'WebSite',
+                'name'        => \App\Core\Config::get('app_name', 'Penița'),
+                'url'         => absolute_url('/'),
+                'inLanguage'  => 'ro',
+            ],
             'title'       => 'Cărți scrise de autori independenți',
             'description' => 'Penița: descoperă și cumpără cărți publicate direct de autori independenți sau încearcă un Blind Date with a Book.',
             'books'       => $books,

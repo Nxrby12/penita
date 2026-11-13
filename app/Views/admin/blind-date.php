@@ -1,4 +1,10 @@
-<?php $on = old('is_blind_date', $book->isBlindDate ? '1' : '') !== ''; ?>
+<?php
+/**
+ * Variabile primite de la AdminBookController::editBlindDate()
+ * @var \App\Models\Book $book
+ * @var string[]         $clues  indiciile salvate
+ */
+$on = old('is_blind_date', $book->isBlindDate ? '1' : '') !== ''; ?>
 <section class="section">
     <div class="container narrow">
         <p class="eyebrow">Administrare · Blind Date</p>

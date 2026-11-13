@@ -1,3 +1,11 @@
+<?php
+/**
+ * Variabile primite de la BlindDateController::index()
+ * @var array<int, array{book: \App\Models\Book, clues: string[]}> $items
+ * @var array<int, bool>                                           $owned  cartile pe care utilizatorul le are deja
+ * @var bool                                                       $loggedIn
+ */
+?>
 <section class="section">
     <div class="container">
         <p class="eyebrow">Blind Date with a Book</p>

@@ -38,7 +38,8 @@ class FileUploaderTest extends TestCase
         $this->assertSame('png', FileUploader::assertExtension('coperta.png', self::ALLOWED));
     }
 
-    /** @dataProvider extensiiInterzise */    #[DataProvider('extensiiInterzise')]
+    /** @dataProvider extensiiInterzise */
+    #[DataProvider('extensiiInterzise')]
     public function testExtensiileNeaprobateSuntRespinse(string $filename): void
     {
         $this->expectException(UploadException::class);

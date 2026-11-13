@@ -1,3 +1,9 @@
+<?php
+/**
+ * Variabile primite de la formularele de autentificare
+ * (nu primeste date; foloseste doar functiile din helpers.php)
+ */
+?>
 <div class="field captcha-field">
     <label for="captcha">Scrie codul din imagine</label>
     <div class="captcha-row">

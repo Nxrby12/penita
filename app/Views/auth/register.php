@@ -1,4 +1,8 @@
 <?php
+/**
+ * Variabile primite de la AuthController::showRegister()
+ * (nu primeste date; foloseste doar functiile din helpers.php)
+ */
 /** Camp de formular cu eticheta si mesaj de eroare. */
 $field = function (string $name, string $label, string $type = 'text', string $autocomplete = '', string $hint = ''): string {
     $msg = error($name);

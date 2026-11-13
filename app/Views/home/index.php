@@ -1,4 +1,9 @@
 <?php
+/**
+ * Variabile primite de la HomeController::index()
+ * @var \App\Models\Book[] $books  cele mai noi carti aprobate
+ * @var bool               $dbError  baza de date nu raspunde
+ */
 use App\Core\View;
 
 $slides = array_slice($books, 0, 5);

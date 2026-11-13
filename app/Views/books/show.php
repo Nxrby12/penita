@@ -1,3 +1,11 @@
+<?php
+/**
+ * Variabile primite de la BookController::show()
+ * @var \App\Models\Book $book
+ * @var bool             $owned  utilizatorul are deja cartea
+ * @var bool             $loggedIn
+ */
+?>
 <section class="section">
     <div class="container">
         <nav class="breadcrumb" aria-label="Unde te afli">

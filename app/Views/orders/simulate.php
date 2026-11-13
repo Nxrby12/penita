@@ -1,3 +1,10 @@
+<?php
+/**
+ * Variabile primite de la OrderController::simulate()
+ * @var string                                                            $sessionId
+ * @var array{name: string, amount: int, success: string, cancel: string} $session
+ */
+?>
 <section class="section">
     <div class="container auth-wrap">
         <div class="auth-card">

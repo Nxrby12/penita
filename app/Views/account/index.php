@@ -1,3 +1,10 @@
+<?php
+/**
+ * Variabile primite de la AccountController::index()
+ * @var \App\Models\User                                                        $user
+ * @var array<int, array{book: \App\Models\Book, paidAt: string, price: float}> $library
+ */
+?>
 <section class="section">
     <div class="container">
         <p class="eyebrow"><?= e($user->roleLabel()) ?></p>

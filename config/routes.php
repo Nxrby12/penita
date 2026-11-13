@@ -14,10 +14,15 @@ use App\Controllers\BlindDateController;
 use App\Controllers\BookController;
 use App\Controllers\DownloadController;
 use App\Controllers\OrderController;
+use App\Controllers\SeoController;
 use App\Controllers\HomeController;
 
 return [
     ['GET',  '/',                          [HomeController::class, 'index']],
+
+    // Pentru motoarele de cautare
+    ['GET',  '/robots.txt',                [SeoController::class, 'robots']],
+    ['GET',  '/sitemap.xml',               [SeoController::class, 'sitemap']],
 
     // Catalog public
     ['GET',  '/carti',                     [BookController::class, 'index']],

@@ -65,17 +65,21 @@ try {
     $router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
 } catch (NotFoundException $e) {
     http_response_code(404);
+    View::share('noindex', true);
     echo View::render('errors/404', ['title' => 'Pagina nu există']);
 } catch (ForbiddenException $e) {
     Logger::warning('security.forbidden', ['reason' => $e->getMessage()]);
     http_response_code(403);
+    View::share('noindex', true);
     echo View::render('errors/403', ['title' => 'Acces interzis']);
 } catch (CsrfException $e) {
     Logger::warning('security.csrf', ['reason' => $e->getMessage()]);
     http_response_code(419);
+    View::share('noindex', true);
     echo View::render('errors/419', ['title' => 'Sesiune expirată']);
 } catch (Throwable $e) {
     http_response_code(500);
     Logger::error('error.server', ['error' => $e->getMessage(), 'file' => basename($e->getFile()) . ':' . $e->getLine()]);
+    View::share('noindex', true);
     echo View::render('errors/500', ['title' => 'Eroare de server']);
 }

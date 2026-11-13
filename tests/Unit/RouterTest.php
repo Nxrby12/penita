@@ -54,6 +54,12 @@ class RouterTest extends TestCase
         $this->router->dispatch('GET', '/biblioteca/nu-exista');
     }
 
+    public function testCerereaHeadEsteTratataCaGet(): void
+    {
+        $this->router->dispatch('HEAD', '/biblioteca/');
+        $this->assertSame(['index'], FakeController::$calls);
+    }
+
     public function testMetodaHttpGresitaNuSePotriveste(): void
     {
         $this->expectException(NotFoundException::class);

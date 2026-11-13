@@ -39,6 +39,7 @@ class AuthController extends Controller
             'title'        => 'Intră în cont',
             'description'  => 'Autentifică-te în contul tău Penița.',
             'needsCaptcha' => self::loginNeedsCaptcha(),
+            'noindex'      => true,
         ]);
     }
 
@@ -83,6 +84,7 @@ class AuthController extends Controller
         $this->view('auth/register', [
             'title'       => 'Creează cont',
             'description' => 'Creează un cont Penița de cititor sau de autor.',
+            'noindex'     => true,
         ]);
     }
 

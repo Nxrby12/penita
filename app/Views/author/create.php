@@ -1,4 +1,9 @@
-<?php $checked = old_list('genres'); ?>
+<?php
+/**
+ * Variabile primite de la AuthorBookController::create()
+ * @var object[] $genres  toate genurile {id, name}
+ */
+$checked = old_list('genres'); ?>
 <section class="section">
     <div class="container narrow">
         <p class="eyebrow">Autor</p>

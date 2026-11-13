@@ -1,4 +1,11 @@
 <?php
+/**
+ * Variabile primite de la AdminLogController::index()
+ * @var array<int, array<string, mixed>> $entries  intrarile din jurnal
+ * @var string|null                      $category
+ * @var string|null                      $level
+ * @var int                              $pendingCount
+ */
 use App\Controllers\AdminLogController;
 use App\Core\View;
 

@@ -1,3 +1,10 @@
+<?php
+/**
+ * Variabile primite de la AdminController::index()
+ * @var \App\Models\User[] $users
+ * @var int                $pendingCount  carti in asteptare
+ */
+?>
 <section class="section">
     <div class="container">
         <p class="eyebrow">Administrare</p>

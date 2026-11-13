@@ -85,20 +85,40 @@
     gap: 0.5rem;
 }
 
+.carousel-dots {
+    gap: 0;
+}
+
+/* Zona de apasare are 28x28 px (usor de nimerit cu degetul); punctul vizibil e mai mic */
 .carousel-dots button {
-    width: 10px;
-    height: 10px;
+    position: relative;
+    min-width: 28px;
+    height: 28px;
     padding: 0;
     border: 0;
-    border-radius: 50%;
-    background: #cfc4ad;
+    background: none;
     cursor: pointer;
+}
+
+.carousel-dots button::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    background: #cfc4ad;
+    transform: translate(-50%, -50%);
     transition: width 0.3s ease, background-color 0.3s ease;
 }
 
 .carousel-dots button.is-active {
+    min-width: 40px;
+}
+
+.carousel-dots button.is-active::before {
     width: 28px;
-    border-radius: 999px;
     background: var(--accent);
 }
 
@@ -120,6 +140,11 @@
     margin-bottom: 2rem;
     font-size: 0.9rem;
     color: var(--ink-soft);
+}
+
+.breadcrumb a {
+    text-decoration: underline;
+    text-underline-offset: 2px;
 }
 
 .book-detail {

@@ -1,3 +1,9 @@
+<?php
+/**
+ * Variabile primite de la AuthController::showLogin()
+ * @var bool $needsCaptcha  au fost prea multe incercari gresite
+ */
+?>
 <section class="section">
     <div class="container auth-wrap">
         <div class="auth-card">

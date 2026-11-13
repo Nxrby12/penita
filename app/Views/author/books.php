@@ -1,3 +1,9 @@
+<?php
+/**
+ * Variabile primite de la AuthorBookController::index()
+ * @var \App\Models\Book[] $books  cartile autorului, cu orice status
+ */
+?>
 <section class="section">
     <div class="container">
         <div class="page-head">

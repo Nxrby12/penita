@@ -42,6 +42,10 @@ abstract class Controller
     /** Pagina e doar pentru utilizatorii autentificati. */
     protected function requireLogin(): void
     {
+        // Paginile private nu trebuie indexate de motoarele de cautare
+        header('X-Robots-Tag: noindex, nofollow');
+        View::share('noindex', true);
+
         if (!Auth::check()) {
             Session::flash('error', 'Intră în cont ca să vezi pagina asta.');
             $this->redirect('/autentificare');

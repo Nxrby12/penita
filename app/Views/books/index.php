@@ -1,4 +1,14 @@
 <?php
+/**
+ * Variabile primite de la BookController::index()
+ * @var string             $title
+ * @var \App\Models\Book[] $books
+ * @var int                $total  numarul total de carti din filtru
+ * @var object[]           $genres  toate genurile {id, name}
+ * @var int|null           $genreId  genul ales sau null
+ * @var int                $page  pagina curenta
+ * @var int                $pages  numarul de pagini
+ */
 use App\Core\View;
 
 $pageUrl = fn(int $p) => url('/carti') . '?' . http_build_query(array_filter(['gen' => $genreId, 'pagina' => $p > 1 ? $p : null]));
@@ -20,6 +30,7 @@ $pageUrl = fn(int $p) => url('/carti') . '?' . http_build_query(array_filter(['g
         <?php if (empty($books)): ?>
             <p class="notice">Nu am găsit cărți aici încă. <a href="<?= url('/carti') ?>">Vezi toate cărțile</a>.</p>
         <?php else: ?>
+            <h2 class="visually-hidden">Rezultate</h2>
             <div class="book-grid">
                 <?php foreach ($books as $book): ?>
                     <?= View::render('partials/book-card', ['book' => $book], null) ?>

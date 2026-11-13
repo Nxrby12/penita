@@ -31,7 +31,11 @@ class BookController extends Controller
             }
         }
 
+        // Adresa canonica: doar parametrii care schimba continutul (genul si pagina)
+        $query = http_build_query(array_filter(['gen' => $genreId, 'pagina' => $page > 1 ? $page : null]));
+
         $this->view('books/index', [
+            'canonical'   => absolute_url('/carti') . ($query ? '?' . $query : ''),
             'title'       => $current ? "Cărți {$current->name}" : 'Toate cărțile',
             'description' => 'Catalogul de cărți publicate de autori independenți pe Penița. Filtrează după gen și descoperă povești noi.',
             'books'       => $result['books'],
@@ -52,7 +56,33 @@ class BookController extends Controller
         $owned = $user !== null
             && ($book->authorId === $user->id || (new OrderRepository())->userOwnsBook($user->id, $book->id));
 
+        $url = absolute_url('/carte/' . $book->slug);
+        $cover = absolute_url($book->coverUrl());
+
         $this->view('books/show', [
+            'canonical'      => $url,
+            'ogType'         => 'book',
+            'ogImage'        => $cover,
+            // Date structurate schema.org: Google poate afisa cartea cu pret si autor in rezultate
+            'structuredData' => [
+                '@context'    => 'https://schema.org',
+                '@type'       => 'Book',
+                'name'        => $book->title,
+                'author'      => ['@type' => 'Person', 'name' => $book->authorName],
+                'description' => $book->excerpt(300),
+                'image'       => $cover,
+                'url'         => $url,
+                'genre'       => $book->genres,
+                'inLanguage'  => 'ro',
+                'bookFormat'  => 'https://schema.org/EBook',
+                'offers'      => [
+                    '@type'         => 'Offer',
+                    'price'         => number_format($book->price, 2, '.', ''),
+                    'priceCurrency' => 'RON',
+                    'availability'  => 'https://schema.org/InStock',
+                    'url'           => $url,
+                ],
+            ],
             'owned'       => $owned,
             'loggedIn'    => $user !== null,
             'title'       => $book->title,
