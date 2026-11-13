@@ -38,7 +38,10 @@ $filters = [null => 'Toate'] + Book::STATUS_LABELS;
                         <?php foreach ($books as $book): ?>
                             <tr>
                                 <td><img src="<?= asset($book->coverUrl()) ?>" alt="" class="thumb" width="40" height="60"></td>
-                                <td><strong><?= e($book->title) ?></strong></td>
+                                <td>
+                                    <strong><?= e($book->title) ?></strong>
+                                    <?php if ($book->isBlindDate): ?><span class="badge badge-blind">Blind Date</span><?php endif; ?>
+                                </td>
                                 <td><?= e($book->authorName) ?></td>
                                 <td><?= e(implode(', ', $book->genres)) ?></td>
                                 <td><?= e($book->formattedPrice()) ?></td>
@@ -54,6 +57,7 @@ $filters = [null => 'Toate'] + Book::STATUS_LABELS;
                                             <?= csrf_field() ?><button type="submit" class="btn btn-small btn-ghost">Respinge</button>
                                         </form>
                                     <?php endif; ?>
+                                    <a href="<?= url('/admin/carti/' . $book->id . '/blind-date') ?>" class="btn btn-small btn-ghost">Blind Date</a>
                                     <form action="<?= url('/admin/carti/' . $book->id . '/sterge') ?>" method="post"
                                           data-confirm="Sigur ștergi definitiv „<?= e($book->title) ?>”?">
                                         <?= csrf_field() ?><button type="submit" class="link-danger">Șterge</button>

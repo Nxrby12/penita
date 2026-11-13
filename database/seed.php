@@ -1,6 +1,6 @@
 <?php
 /**
- * Date demonstrative: 3 autori si 8 carti aprobate, cu coperti.
+ * Date demonstrative: 3 autori, 8 carti aprobate si 2 carti Blind Date, cu coperti.
  * Folositor ca site-ul sa nu fie gol la prezentare si pe hosting.
  *
  * Rulare, din folderul proiectului:   php database/seed.php
@@ -44,6 +44,13 @@ $books = [
      "În satul Valea Neagră nimeni nu vorbește între ora trei și ora patru dimineața. Nimeni nu mai știe de ce.\n\nUn student la etnografie vine să afle și face greșeala să întrebe cu voce tare."],
     ['Mic manual de început', 'ioana_dima', 18.00, ['Dezvoltare personala'],
      "Un ghid scurt și practic pentru cei care amână de prea mult timp primul pas: primul roman, prima alergare, prima afacere.\n\nȘapte capitole, fiecare cu un exercițiu de zece minute."],
+    // Carti Blind Date: al saselea element = indiciile
+    ['Grădina cu ceasuri oprite', 'ana_pop', 21.00, ['Fantasy'],
+     "În grădina bunicii, fiecare ceas oprit ține pe loc o zi pe care cineva n-a vrut s-o lase să treacă.\n\nCând Sara repornește unul din greșeală, o zi din 1989 începe să curgă din nou.",
+     ['o grădină în care timpul stă pe loc', 'o bunică cu prea multe secrete', 'o zi din trecut care se repetă']],
+    ['Ultima stație: Sulina', 'mihai_radu', 26.00, ['Thriller'],
+     "Ultimul vapor spre Sulina pleacă cu 43 de pasageri și ajunge cu 42.\n\nNimeni nu a coborât, nimeni nu a căzut în apă, iar căpitanul jură că a numărat greșit.",
+     ['un vapor, un fluviu, o singură noapte', 'un pasager care dispare fără urmă', 'toată lumea minte, inclusiv naratorul']],
 ];
 
 $genreIds = $db->query('SELECT name, id FROM genres')->fetchAll(PDO::FETCH_KEY_PAIR);
@@ -72,7 +79,9 @@ foreach ($authors as $username => $penName) {
 @mkdir(BookStorage::coverDir(), 0755, true);
 @mkdir(BookStorage::pdfDir(), 0755, true);
 
-foreach ($books as $i => [$title, $author, $price, $genres, $description]) {
+foreach ($books as $i => $entry) {
+    [$title, $author, $price, $genres, $description] = $entry;
+    $clues = $entry[5] ?? [];
     $slug = Str::slug($title);
     $exists = $db->prepare('SELECT 1 FROM books WHERE slug = :s');
     $exists->execute(['s' => $slug]);
@@ -88,11 +97,17 @@ foreach ($books as $i => [$title, $author, $price, $genres, $description]) {
     file_put_contents(BookStorage::pdfDir() . '/' . $pdf, demoPdf($title, $authors[$author]));
 
     $db->prepare(
-        "INSERT INTO books (author_id, title, slug, description, price, cover_path, pdf_path, status, reviewed_at, created_at)
-         VALUES (:a, :t, :s, :d, :p, :c, :f, 'approved', NOW(), NOW() - INTERVAL :days DAY)"
+        "INSERT INTO books (author_id, title, slug, description, price, cover_path, pdf_path, status,
+                            is_blind_date, reviewed_at, created_at)
+         VALUES (:a, :t, :s, :d, :p, :c, :f, 'approved', :blind, NOW(), NOW() - INTERVAL :days DAY)"
     )->execute(['a' => $authorIds[$author], 't' => $title, 's' => $slug, 'd' => $description,
-                'p' => $price, 'c' => $cover, 'f' => $pdf, 'days' => $i]);
+                'p' => $price, 'c' => $cover, 'f' => $pdf, 'blind' => (int) ($clues !== []), 'days' => $i]);
     $bookId = (int) $db->lastInsertId();
+
+    foreach ($clues as $position => $clue) {
+        $db->prepare('INSERT INTO blind_date_clues (book_id, position, clue) VALUES (:b, :p, :c)')
+           ->execute(['b' => $bookId, 'p' => $position + 1, 'c' => $clue]);
+    }
 
     foreach ($genres as $genre) {
         $db->prepare('INSERT INTO book_genres (book_id, genre_id) VALUES (:b, :g)')

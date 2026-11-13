@@ -22,6 +22,13 @@ abstract class Controller
         exit;
     }
 
+    /** Redirectionare catre o adresa completa (ex: pagina de plata Stripe). */
+    protected function redirectTo(string $absoluteUrl): never
+    {
+        header('Location: ' . $absoluteUrl, true, 303);
+        exit;
+    }
+
     /** Intoarce la formular cu erorile si datele completate (fara parole). */
     protected function backWithErrors(string $path, ValidationException|array $errors, array $old = []): never
     {

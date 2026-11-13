@@ -8,7 +8,10 @@ use App\Controllers\AdminBookController;
 use App\Controllers\AdminController;
 use App\Controllers\AuthController;
 use App\Controllers\AuthorBookController;
+use App\Controllers\BlindDateController;
 use App\Controllers\BookController;
+use App\Controllers\DownloadController;
+use App\Controllers\OrderController;
 use App\Controllers\HomeController;
 
 return [
@@ -17,6 +20,15 @@ return [
     // Catalog public
     ['GET',  '/carti',                     [BookController::class, 'index']],
     ['GET',  '/carte/{slug}',              [BookController::class, 'show']],
+    ['GET',  '/blind-date',                [BlindDateController::class, 'index']],
+
+    // Cumparare si descarcare
+    ['POST', '/cumpara/{id}',              [OrderController::class, 'buy']],
+    ['GET',  '/comanda/succes',            [OrderController::class, 'success']],
+    ['GET',  '/comanda/anulata',           [OrderController::class, 'cancel']],
+    ['GET',  '/comanda/simulare',          [OrderController::class, 'simulate']],
+    ['POST', '/comanda/simulare',          [OrderController::class, 'simulateConfirm']],
+    ['GET',  '/descarca/{id}',             [DownloadController::class, 'download']],
 
     // Autentificare
     ['GET',  '/autentificare',             [AuthController::class, 'showLogin']],
@@ -40,4 +52,6 @@ return [
     ['POST', '/admin/carti/{id}/aproba',   [AdminBookController::class, 'approve']],
     ['POST', '/admin/carti/{id}/respinge', [AdminBookController::class, 'reject']],
     ['POST', '/admin/carti/{id}/sterge',   [AdminBookController::class, 'destroy']],
+    ['GET',  '/admin/carti/{id}/blind-date', [AdminBookController::class, 'editBlindDate']],
+    ['POST', '/admin/carti/{id}/blind-date', [AdminBookController::class, 'updateBlindDate']],
 ];

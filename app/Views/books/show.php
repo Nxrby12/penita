@@ -17,7 +17,16 @@
 
                 <div class="book-detail-buy">
                     <span class="book-detail-price"><?= e($book->formattedPrice()) ?></span>
-                    <button type="button" class="btn" disabled title="Plata online vine în etapa următoare">Cumpără</button>
+                    <?php if ($owned): ?>
+                        <a href="<?= url('/descarca/' . $book->id) ?>" class="btn">Descarcă PDF</a>
+                    <?php elseif ($loggedIn): ?>
+                        <form action="<?= url('/cumpara/' . $book->id) ?>" method="post">
+                            <?= csrf_field() ?>
+                            <button type="submit" class="btn"><?= $book->price > 0 ? 'Cumpără' : 'Adaugă gratuit' ?></button>
+                        </form>
+                    <?php else: ?>
+                        <a href="<?= url('/autentificare') ?>" class="btn">Intră în cont ca să cumperi</a>
+                    <?php endif; ?>
                 </div>
 
                 <h2 class="visually-hidden">Despre carte</h2>
@@ -32,6 +41,7 @@
                     <tr><th scope="row">Autor</th><td><?= e($book->authorName) ?></td></tr>
                     <tr><th scope="row">Genuri</th><td><?= e(implode(', ', $book->genres) ?: '—') ?></td></tr>
                     <tr><th scope="row">Format</th><td>PDF, descărcabil după cumpărare</td></tr>
+                    <tr><th scope="row">Plată</th><td>Card, prin Stripe (datele cardului nu ajung la noi)</td></tr>
                     <tr><th scope="row">Publicată</th><td><?= e(date('d.m.Y', strtotime($book->createdAt))) ?></td></tr>
                 </table>
             </div>

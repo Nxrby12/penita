@@ -163,6 +163,49 @@ class BookRepository extends BaseRepository
         return $stmt->rowCount() > 0;
     }
 
+    /**
+     * Cartile Blind Date aprobate, cu indiciile lor (fara titlu sau coperta in pagina publica).
+     * @return array<int, array{book: Book, clues: string[]}>
+     */
+    public function blindDates(): array
+    {
+        $stmt = $this->db->query(
+            self::SELECT . " WHERE b.status = 'approved' AND b.is_blind_date = TRUE ORDER BY b.created_at DESC, b.id DESC"
+        );
+        return array_map(fn(array $row) => [
+            'book'  => $this->map($row),
+            'clues' => $this->cluesFor((int) $row['id']),
+        ], $stmt->fetchAll());
+    }
+
+    /** @return string[] indiciile, in ordine */
+    public function cluesFor(int $bookId): array
+    {
+        $stmt = $this->db->prepare('SELECT clue FROM blind_date_clues WHERE book_id = :book ORDER BY position');
+        $stmt->execute(['book' => $bookId]);
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+    /** Marcheaza / demarcheaza o carte ca Blind Date si ii salveaza indiciile. */
+    public function saveBlindDate(int $bookId, bool $enabled, array $clues): void
+    {
+        $this->db->beginTransaction();
+        try {
+            $this->db->prepare('UPDATE books SET is_blind_date = :on WHERE id = :id')
+                     ->execute(['on' => (int) $enabled, 'id' => $bookId]);
+            $this->db->prepare('DELETE FROM blind_date_clues WHERE book_id = :id')->execute(['id' => $bookId]);
+
+            $insert = $this->db->prepare('INSERT INTO blind_date_clues (book_id, position, clue) VALUES (:b, :p, :c)');
+            foreach (array_values($clues) as $i => $clue) {
+                $insert->execute(['b' => $bookId, 'p' => $i + 1, 'c' => $clue]);
+            }
+            $this->db->commit();
+        } catch (\PDOException $e) {
+            $this->db->rollBack();
+            throw $e;
+        }
+    }
+
     /** @return string[] */
     public function genreNames(int $bookId): array
     {

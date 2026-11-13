@@ -7,6 +7,7 @@
  */
 declare(strict_types=1);
 
+use App\Core\Config;
 use App\Core\Csrf;
 use App\Core\Router;
 use App\Core\Session;
@@ -20,6 +21,7 @@ define('ROOT', dirname(__DIR__));
 require ROOT . '/vendor/autoload.php';
 
 $config = require ROOT . '/config/config.php';
+Config::load($config);
 View::setBaseUrl($config['base_url']);
 View::share('appName', $config['app_name']);
 

@@ -11,6 +11,17 @@ return [
     // Pe hosting, daca site-ul e direct pe domeniu         -> ''
     'base_url' => '/biblioteca',
 
+    // Adresa completa a site-ului (folosita de Stripe ca sa te trimita inapoi dupa plata)
+    'app_url' => 'http://localhost/biblioteca',
+
+    'payments' => [
+        // 'stripe'   = plata reala prin Stripe (pe site-ul publicat)
+        // 'simulare' = plata simulata, doar pentru teste pe laptop
+        'driver'        => 'stripe',
+        'stripe_secret' => 'sk_test_...',   // din dashboard.stripe.com -> Developers -> API keys
+        'currency'      => 'ron',
+    ],
+
     'db' => [
         'host'     => '127.0.0.1',
         'port'     => 3306,

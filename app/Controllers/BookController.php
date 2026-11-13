@@ -7,6 +7,7 @@ use App\Core\Controller;
 use App\Exceptions\NotFoundException;
 use App\Repositories\BookRepository;
 use App\Repositories\GenreRepository;
+use App\Repositories\OrderRepository;
 
 /** Partea publica: catalogul de carti si pagina fiecarei carti. */
 class BookController extends Controller
@@ -47,7 +48,13 @@ class BookController extends Controller
         $book = (new BookRepository())->findPublishedBySlug($slug)
             ?? throw new NotFoundException("Carte inexistenta: {$slug}");
 
+        $user = auth_user();
+        $owned = $user !== null
+            && ($book->authorId === $user->id || (new OrderRepository())->userOwnsBook($user->id, $book->id));
+
         $this->view('books/show', [
+            'owned'       => $owned,
+            'loggedIn'    => $user !== null,
             'title'       => $book->title,
             'description' => $book->excerpt(155),
             'book'        => $book,

@@ -61,6 +61,8 @@ class AuthorBookController extends Controller
             $price = round((float) str_replace(',', '.', $data['price']), 2);
             if ($price < 0 || $price > 500) {
                 $errors['price'] = 'Prețul trebuie să fie între 0 și 500 lei.';
+            } elseif ($price > 0 && $price < 2) {
+                $errors['price'] = 'Prețul minim pentru plata cu cardul este 2 lei (sau 0 pentru o carte gratuită).';
             }
         } catch (ValidationException $e) {
             $errors = $e->errors();

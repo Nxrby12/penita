@@ -22,6 +22,20 @@ function url(string $path = '/'): string
     return View::baseUrl() . '/' . ltrim($path, '/');
 }
 
+/**
+ * Adresa completa (cu http:// si domeniu), necesara pentru Stripe.
+ * Se ia din config ('app_url'); daca lipseste, se deduce din cererea curenta.
+ */
+function absolute_url(string $path = '/'): string
+{
+    $base = rtrim((string) \App\Core\Config::get('app_url', ''), '/');
+    if ($base === '') {
+        $https = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
+        return ($https ? 'https' : 'http') . '://' . ($_SERVER['HTTP_HOST'] ?? 'localhost') . url($path);
+    }
+    return $base . '/' . ltrim($path, '/');
+}
+
 /** Link catre un fisier din public/ (CSS, JS, imagini). */
 function asset(string $path): string
 {

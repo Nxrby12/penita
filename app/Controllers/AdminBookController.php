@@ -46,6 +46,49 @@ class AdminBookController extends Controller
         $this->changeStatus((int) $id, 'rejected', 'a fost respinsă.');
     }
 
+    /** Formularul Blind Date: bifa + 3 indicii. */
+    public function editBlindDate(string $id): void
+    {
+        $this->guard();
+        $book = $this->findOrFail((int) $id);
+        $this->view('admin/blind-date', [
+            'title' => 'Blind Date: ' . $book->title,
+            'book'  => $book,
+            'clues' => $this->books->cluesFor($book->id),
+        ]);
+    }
+
+    public function updateBlindDate(string $id): void
+    {
+        $this->guard();
+        $book = $this->findOrFail((int) $id);
+        $enabled = isset($_POST['is_blind_date']);
+        $clues = array_map(fn($c) => trim((string) $c), array_slice((array) ($_POST['clues'] ?? []), 0, 3));
+
+        $errors = [];
+        foreach ([0, 1, 2] as $i) {
+            $clue = $clues[$i] ?? '';
+            if ($enabled && $clue === '') {
+                $errors["clue{$i}"] = 'Scrie indiciul.';
+            } elseif (mb_strlen($clue) > 80) {
+                $errors["clue{$i}"] = 'Maximum 80 de caractere.';
+            }
+        }
+        if ($errors !== []) {
+            $old = $_POST;
+            foreach ([0, 1, 2] as $i) {
+                $old["clue{$i}"] = $clues[$i] ?? '';
+            }
+            $this->backWithErrors("/admin/carti/{$book->id}/blind-date", $errors, $old);
+        }
+
+        $this->books->saveBlindDate($book->id, $enabled, $enabled ? $clues : []);
+        Session::flash('success', $enabled
+            ? "„{$book->title}” este acum un Blind Date."
+            : "„{$book->title}” nu mai este Blind Date.");
+        $this->redirect('/admin/carti');
+    }
+
     public function destroy(string $id): void
     {
         $this->guard();

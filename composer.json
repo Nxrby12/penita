@@ -3,7 +3,8 @@
     "description": "Platforma de self-publishing cu sectiunea Blind Date with a Book",
     "type": "project",
     "require": {
-        "php": ">=8.1"
+        "php": ">=8.1",
+        "stripe/stripe-php": "*"
     },
     "autoload": {
         "psr-4": {

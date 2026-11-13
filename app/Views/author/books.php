@@ -36,7 +36,10 @@
                                     <?php endif; ?>
                                 </td>
                                 <td><?= e($book->formattedPrice()) ?></td>
-                                <td><span class="badge badge-<?= e($book->status) ?>"><?= e($book->statusLabel()) ?></span></td>
+                                <td>
+                                    <span class="badge badge-<?= e($book->status) ?>"><?= e($book->statusLabel()) ?></span>
+                                    <?php if ($book->isBlindDate): ?><span class="badge badge-blind">Blind Date</span><?php endif; ?>
+                                </td>
                                 <td><?= e(date('d.m.Y', strtotime($book->createdAt))) ?></td>
                                 <td>
                                     <form action="<?= url('/autor/carti/' . $book->id . '/sterge') ?>" method="post"

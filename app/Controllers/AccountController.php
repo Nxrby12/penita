@@ -5,6 +5,7 @@ namespace App\Controllers;
 
 use App\Core\Auth;
 use App\Core\Controller;
+use App\Repositories\OrderRepository;
 
 /** Pagina "Contul meu": continutul difera in functie de rol. */
 class AccountController extends Controller
@@ -15,7 +16,8 @@ class AccountController extends Controller
 
         $this->view('account/index', [
             'title' => 'Contul meu',
-            'user'  => Auth::user(),
+            'user'    => Auth::user(),
+            'library' => (new OrderRepository())->library(Auth::user()->id),
         ]);
     }
 }
